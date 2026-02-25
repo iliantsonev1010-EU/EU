@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EU Learning Path — Персонализирано обучение</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --accent: #1e6fbf;
+            --bg: linear-gradient(135deg, #e8f4f8, #f5f9fc);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: #000000;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .header h1 {
+            color: var(--accent);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background: rgba(30, 111, 191, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .back-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateX(-4px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(30, 111, 191, 0.08);
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Virtual Assistant Floating Button */
+        .assistant-fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1e6fbf, #1451a3);
+            border-radius: 50%;
+            box-shadow: 0 8px 24px rgba(30, 111, 191, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: all 0.3s ease;
+            z-index: 999;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .assistant-fab:hover {
+            transform: scale(1.15);
+            box-shadow: 0 12px 32px rgba(30, 111, 191, 0.4);
+        }
+
+        .assistant-fab:active {
+            transform: scale(0.95);
+        }
+        
+        .card h2 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .meta {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Learning Path Styles */
+        .learning-path-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .learning-step {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(30, 111, 191, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(30, 111, 191, 0.08);
+            animation: slideInUp 0.5s ease-out;
+        }
+        
+        .learning-step:hover {
+            border-color: rgba(30, 111, 191, 0.3);
+            box-shadow: 0 12px 32px rgba(30, 111, 191, 0.15);
+        }
+        
+        .learning-step h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        
+        .option-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        
+        .option-btn {
+            padding: 12px 16px;
+            border: 2px solid rgba(30, 111, 191, 0.2);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #000000;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+        
+        .option-btn:hover {
+            background: rgba(30, 111, 191, 0.05);
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        
+        .option-btn.selected {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .recommendations-container {
+            grid-column: 1/-1;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(30, 111, 191, 0.1);
+            box-shadow: 0 8px 24px rgba(30, 111, 191, 0.08);
+            animation: slideInUp 0.5s ease-out;
+        }
+        
+        .recommendations-container h3 {
+            color: var(--accent);
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        
+        .personalized-impact {
+            background: linear-gradient(135deg, rgba(30, 111, 191, 0.08), rgba(30, 111, 191, 0.03));
+            padding: 16px;
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-style: italic;
+            color: #000000;
+        }
+        
+        .recommendation-item {
+            background: rgba(30, 111, 191, 0.03);
+            padding: 14px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid rgba(30, 111, 191, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .recommendation-item:hover {
+            background: rgba(30, 111, 191, 0.06);
+            border-left-color: var(--accent);
+            transform: translateX(4px);
+        }
+        
+        .recommendation-item h4 {
+            color: var(--accent);
+            margin: 0 0 6px 0;
+            font-size: 16px;
+        }
+        
+        .recommendation-item p {
+            margin: 0;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .institution-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .institution-card {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(30, 111, 191, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .institution-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 16px rgba(30, 111, 191, 0.12);
+        }
+        
+        .institution-card h5 {
+            color: var(--accent);
+            margin: 0 0 4px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .institution-card p {
+            margin: 0;
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+        
+        @media (max-width: 900px) {
+            .learning-path-container {
+                grid-template-columns: 1fr;
+            }
+            .institution-list {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index1.html" class="back-button">← Обратно към началната страница</a>
+        
+        <div class="header">
+            <h1>🎓 EU Learning Path</h1>
+            <p>Персонализирано обучение - открий как Европа може да те вдъхнови и развие</p>
+        </div>
+        
+        <div class="card" style="animation: fadeInUp 0.5s ease-out; margin-bottom: 20px;">
+            <h2>Твоят персонален път към европейските възможности</h2>
+            <p class="meta">Избери своята възраст и интереси, за да получиш персонализирани препоръчания за страни, програми и institucии в Европа.</p>
+        </div>
+        
+        <div class="learning-path-container">
+            <div class="learning-step">
+                <h3>1️⃣ Избери възраст</h3>
+                <div class="option-buttons">
+                    <button class="option-btn" id="age-student" onclick="selectAge('student')">👨‍🎓 Ученик</button>
+                    <button class="option-btn" id="age-scholar" onclick="selectAge('scholar')">🎓 Студент/Докторант</button>
+                </div>
+            </div>
+            <div class="learning-step">
+                <h3>2️⃣ Избери интерес</h3>
+                <div class="option-buttons">
+                    <button class="option-btn" id="int-history" onclick="selectInterest('history')">📚 История</button>
+                    <button class="option-btn" id="int-it" onclick="selectInterest('it')">💻 Информационни технологии</button>
+                    <button class="option-btn" id="int-ecology" onclick="selectInterest('ecology')">🌿 Екология</button>
+                    <button class="option-btn" id="int-travel" onclick="selectInterest('travel')">✈️ Пътуване</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="recommendations" style="display: none;"></div>
+    </div>
+
+    <script>
+        // EU Learning Path - Personalized Learning Recommendations
+        const LEARNING_PATH_DATA = {
+            history: {
+                student: {
+                    countries: [
+                        {code:'DE', name_bg:'Германия', reason:'Холокостът и Втората световна война'},
+                        {code:'FR', name_bg:'Франция', reason:'Френската революция и европейската история'},
+                        {code:'IT', name_bg:'Италия', reason:'Фашизма и Ренесансът'},
+                        {code:'PL', name_bg:'Полша', reason:'История на комунизма в Европа'}
+                    ],
+                    institutions:[
+                        {name:'Европейският музей', desc:'Музей на европейската история'},
+                        {name:'Обучение "Европейски истории"', desc:'Онлайн курсове по история'},
+                        {name:'Меморијални места', desc:'Исторически сайтове на ЕС'},
+                        {name:'Архиви на ЕС', desc:'Дигитални архиви'}
+                    ],
+                    impact:'Историята на Европа е твоята история. Чрез разбирането на минало, получаваш право да влияеш на бъдещето.'
+                },
+                scholar: {
+                    countries: [
+                        {code:'DE', name_bg:'Германия', reason:'Центъра за политическо образование'},
+                        {code:'AT', name_bg:'Австрия', reason:'Архивите на австрийската история'},
+                        {code:'CZ', name_bg:'Чехия', reason:'Средновекова европейска история'},
+                        {code:'HU', name_bg:'Унгария', reason:'История на Австро-Унгария'}
+                    ],
+                    institutions:[
+                        {name:'Научни проекти ЕС', desc:'Хоризонт Европа програмата'},
+                        {name:'Докторантури в ЕС', desc:'Докторски програми'},
+                        {name:'Архивни стажове', desc:'Работа в архивите'},
+                        {name:'Изследователски мрежи', desc:'Международни научни мрежи'}
+                    ],
+                    impact:'Като научен работник, можеш да преосмислиш европейската история и да допринесеш към историческото разбиране.'
+                }
+            },
+            it: {
+                student: {
+                    countries: [
+                        {code:'DE', name_bg:'Германия', reason:'Силен ИТ и технологичен сектор'},
+                        {code:'IE', name_bg:'Ирландия', reason:'Технологичен хъб на Европа'},
+                        {code:'SE', name_bg:'Швеция', reason:'Иновации и стартъпи'},
+                        {code:'NL', name_bg:'Нидерландия', reason:'Киберсигурност и дата'}
+                    ],
+                    institutions:[
+                        {name:'Кодни академии', desc:'Обучение по програмиране'},
+                        {name:'ИТ бутикови', desc:'Технологични кампании'},
+                        {name:'Хакатони', desc:'Състезания по иновации'},
+                        {name:'Онлайн платформи', desc:'Дистанционни ИТ курсове'}
+                    ],
+                    impact:'Технологията е бъдещето на Европа. Твоите умения ще оформят цифровото общество.'
+                },
+                scholar: {
+                    countries: [
+                        {code:'FI', name_bg:'Финландия', reason:'Водеща в цифровалното образование'},
+                        {code:'SE', name_bg:'Швеция', reason:'Изследвания в AI и машинното учене'},
+                        {code:'DE', name_bg:'Германия', reason:'Индустрия 4.0 и киберсигурност'},
+                        {code:'BE', name_bg:'Белгия', reason:'ЕС цифрална политика'}
+                    ],
+                    institutions:[
+                        {name:'ИТ Докторантури', desc:'PhD програми по компютърни науки'},
+                        {name:'Изследователски центрове', desc:'Лаборатории за AI и кибер'},
+                        {name:'ЕС иновационни проекти', desc:'Хоризонт Европа за технология'},
+                        {name:'Стартъп програмите', desc:'Бизнес инкубатори'}
+                    ],
+                    impact:'Като IT изследовател, можеш да помогнеш на Европа да остане глобален лидер в технология.'
+                }
+            },
+            ecology: {
+                student: {
+                    countries: [
+                        {code:'SE', name_bg:'Швеция', reason:'Еко-лидер на Европа'},
+                        {code:'FI', name_bg:'Финландия', reason:'Устойчивост и природа'},
+                        {code:'DE', name_bg:'Германия', reason:'Енергийна преход и климата'},
+                        {code:'DK', name_bg:'Дания', reason:'Възобновяеми енергийни източники'}
+                    ],
+                    institutions:[
+                        {name:'Еко-туризъм', desc:'Зелен туризъм програмите'},
+                        {name:'Природни паркове', desc:'Посещение на национални паркове'},
+                        {name:'Еко-волонтьорство', desc:'Волонтьорски програми'},
+                        {name:'Еко-школи', desc:'Образование за устойчивост'}
+                    ],
+                    impact:'Климатичната криза е твоето поколение. Европа предлага инструментите за промяна.'
+                },
+                scholar: {
+                    countries: [
+                        {code:'SE', name_bg:'Швеция', reason:'Климатични изследвания'},
+                        {code:'AT', name_bg:'Австрия', reason:'Защита на биоразнообразието'},
+                        {code:'FI', name_bg:'Финландия', reason:'Горски екология'},
+                        {code:'PT', name_bg:'Португалия', reason:'Прибрежна устойчивост'}
+                    ],
+                    institutions:[
+                        {name:'Еко Докторантури', desc:'PhD в екология и климата'},
+                        {name:'Зелена наука', desc:'Лаборатории за устойчивост'},
+                        {name:'ЕС климатични проекти', desc:'Хоризонт Европа екология'},
+                        {name:'Международни мрежи', desc:'Климатични научни мрежи'}
+                    ],
+                    impact:'Евроспейските еколози спасяват планетата. Твоята работа има световно значение.'
+                }
+            },
+            travel: {
+                student: {
+                    countries: [
+                        {code:'FR', name_bg:'Франция', reason:'Туристически дестинация номер 1'},
+                        {code:'IT', name_bg:'Италия', reason:'Култура, изкуство и традиции'},
+                        {code:'ES', name_bg:'Испания', reason:'Пътна архитектура и пейзажи'},
+                        {code:'GR', name_bg:'Гърция', reason:'Древна история и остров'}
+                    ],
+                    institutions:[
+                        {name:'Туристически курсове', desc:'Туризъм и хостелски умения'},
+                        {name:'Работа в туризма', desc:'Сезонни работни места'},
+                        {name:'Путни мрежи', desc:'Пътни карти и туристическа информация'},
+                        {name:'Молодежни хостели', desc:'Бюджетни пътни опции'}
+                    ],
+                    impact:'Путешествието разширява твоята перспектива. Европа е светът в един континент.'
+                },
+                scholar: {
+                    countries: [
+                        {code:'ES', name_bg:'Испания', reason:'Туристическото управление'},
+                        {code:'IT', name_bg:'Италия', reason:'Туризъм и устойчивост'},
+                        {code:'PT', name_bg:'Португалия', reason:'Агро-туризъм'},
+                        {code:'GR', name_bg:'Гърция', reason:'Туристическите проучвания'}
+                    ],
+                    institutions:[
+                        {name:'Туристически MBA', desc:'Управление на туризма'},
+                        {name:'Изследвания', desc:'Проучване на туризма'},
+                        {name:'Устойчив туризъм', desc:'Зелени туристически проекти'},
+                        {name:'Международни партньорства', desc:'Туристически мрежи'}
+                    ],
+                    impact:'Туристическата индустрия оформя Европа. Твоята работа свързва света.'
+                }
+            }
+        };
+
+        window.userProfile = {age: null, interest: null};
+
+        function selectAge(age) {
+            window.userProfile.age = age;
+            document.querySelectorAll('[id^="age-"]').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('age-' + age).classList.add('selected');
+            if(window.userProfile.interest) showRecommendations();
+        }
+
+        function selectInterest(interest) {
+            window.userProfile.interest = interest;
+            document.querySelectorAll('[id^="int-"]').forEach(btn => btn.classList.remove('selected'));
+            document.getElementById('int-' + interest).classList.add('selected');
+            if(window.userProfile.age) showRecommendations();
+        }
+
+        function showRecommendations() {
+            const {age, interest} = window.userProfile;
+            if(!age || !interest) return;
+
+            const data = LEARNING_PATH_DATA[interest][age];
+            if(!data) return;
+
+            let html = `<div class="recommendations-container" style="animation: slideInUp 0.5s ease-out;">
+                <h3>✨ Твоят персонален път</h3>
+                <div class="personalized-impact">"${data.impact}"</div>
+                
+                <h4 style="color: var(--accent); margin-top: 20px; margin-bottom: 12px;">🌍 Препоръчани страни за теб:</h4>
+            `;
+
+            data.countries.forEach(country => {
+                html += `
+                    <div class="recommendation-item">
+                        <h4>${country.name_bg}</h4>
+                        <p>${country.reason}</p>
+                    </div>
+                `;
+            });
+
+            html += `<h4 style="color: var(--accent); margin-top: 20px; margin-bottom: 12px;">🏫 Препоръчани програми и институции:</h4>
+                <div class="institution-list">
+            `;
+
+            data.institutions.forEach(inst => {
+                html += `
+                    <div class="institution-card">
+                        <h5>${inst.name}</h5>
+                        <p>${inst.desc}</p>
+                    </div>
+                `;
+            });
+
+            html += `
+                </div>
+                <p class="meta" style="margin-top: 20px; color: #666; font-size: 14px;">
+                    💡 Съвет: Всяка страна предлага уникалните възможности за твоята кариера и развитие. Натисни на "Обратно" за да посетиш детайлна информация за държавите.
+                </p>
+            </div>`;
+
+            const recDiv = document.getElementById('recommendations');
+            recDiv.innerHTML = html;
+            recDiv.style.display = 'block';
+        }
+    </script>
+
+    <!-- Virtual Assistant Floating Button -->
+    <div class="assistant-fab" title="Виртуален асистент" onclick="openAssistant()">🤖</div>
+
+    <script>
+        function openAssistant(country = '') {
+            const url = country ? `Virtual_Assistant.html?country=${encodeURIComponent(country)}` : 'Virtual_Assistant.html';
+            window.open(url, 'assistant', 'width=500,height=600,resizable=yes,scrollbars=yes');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">      
+    <title>Център за интерактивно обучение на ЕС</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #1e6fbf;
+            --dark: #0f2d47;
+            --light: #f5f9fc;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f4f8 0%, #f5f9fc 100%);      
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .header-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background: rgba(30, 111, 191, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Tab Navigation */
+        .tabs-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(30, 111, 191, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .tabs-container {
+            display: flex;
+            border-bottom: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 150px;
+            padding: 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .tab-button:hover {
+            background: rgba(30, 111, 191, 0.05);
+            color: var(--accent);
+        }
+
+        .tab-button.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+            background: rgba(30, 111, 191, 0.05);
+        }
+
+        .tab-button i {
+            margin-right: 8px;
+        }
+
+        /* Tab Content */
+        .tabs-content {
+            padding: 40px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Shared styles for content within tabs */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .timeline-wrapper {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            margin-bottom: 40px;
+            animation: none;
+        }
+
+        .timeline-event {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 30px;
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        .timeline-event:nth-child(n) {
+            animation-delay: calc(0.1s * var(--index, 0));
+        }
+
+        .timeline-year {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(30, 111, 191, 0.08);
+            border: 1px solid rgba(30, 111, 191, 0.1);
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(30, 111, 191, 0.12);
+        }
+
+        .timeline-title {
+            color: var(--accent);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Quiz Styles */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(30, 111, 191, 0.1);
+            animation: slideUp 0.5s ease-out;
+            margin-bottom: 20px;
+            border: 1px solid rgba(30, 111, 191, 0.08);
+        }
+
+        .level-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .level-option {
+            padding: 20px;
+            text-align: center;
+            background: rgba(30, 111, 191, 0.05);
+            border: 2px solid rgba(30, 111, 191, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .level-option:hover {
+            background: rgba(30, 111, 191, 0.1);
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .level-option.selected {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Learning Path Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .header h1 {
+            color: var(--accent);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .module {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(30, 111, 191, 0.08);
+            border: 1px solid rgba(30, 111, 191, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.6s ease-out;
+        }
+
+        .module:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(30, 111, 191, 0.12);
+        }
+
+        .module h3 {
+            color: var(--accent);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .module p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        button {
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button:hover {
+            background: #154a8b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 111, 191, 0.2);
+        }
+
+        select, input[type="text"], input[type="email"], textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(30, 111, 191, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-event {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .timeline-year {
+                text-align: left;
+            }
+
+            .tab-button {
+                min-width: 100px;
+                padding: 15px;
+                font-size: 14px;
+            }
+
+            .tabs-content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-section">
+    <a href="index1.html" class="back-button">← Обратно към начало</a>
+    <h1>🎓 Център за интерактивно обучение</h1>
+    <p class="subtitle">Изучавайте Европейския съюз чрез интерактивни инструменти, тесты и персонализирани пътища</p>
+</div>
+
+<div class="tabs-wrapper">
+    <div class="tabs-container">
+        <button class="tab-button active" onclick="switchTab('timeline')">
+            <i class="fas fa-timeline"></i> ЕС във времето
+        </button>
+        <button class="tab-button" onclick="switchTab('quiz')">
+            <i class="fas fa-question-circle"></i> Quiz
+        </button>
+        <button class="tab-button" onclick="switchTab('learning')">
+            <i class="fas fa-graduation-cap"></i> Learning Path
+        </button>
+    </div>
+
+    <div class="tabs-content">
+        <!-- Timeline Tab -->
+        <div id="timeline" class="tab-content active">
+            <div class="container">
+                <div class="timeline-wrapper">
+                    <timeline-content-placeholder>
+                        <h2 style="color: var(--accent); margin-bottom: 30px;">История на Европейския съюз</h2>
+                        <p style="margin-bottom: 40px; color: #666;">Пътешествие през ключовите моменти на европейската интеграция</p>
+                    </timeline-content-placeholder>
+                    <div id="timelineEvents"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Tab -->
+        <div id="quiz" class="tab-content">
+            <div class="container">
+                <div class="card">
+                    <h1 style="margin-bottom: 10px;">📝 EU Quiz</h1>
+                    <p class="subtitle">Тестирайте вашите познания за Европейския съюз</p>
+                </div>
+                <div id="quizContent"></div>
+            </div>
+        </div>
+
+        <!-- Learning Path Tab -->
+        <div id="learning" class="tab-content">
+            <div class="container">
+                <div class="header">
+                    <h1>📚 EU Learning Path</h1>
+                    <p>Персонализиран път към познаването на ЕС</p>
+                </div>
+                <div id="learningContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Tab switching functionality
+function switchTab(tabName) {
+    // Hide all tabs
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    // Remove active class from all buttons
+    const buttons = document.querySelectorAll('.tab-button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    // Show selected tab
+    document.getElementById(tabName).classList.add('active');
+
+    // Add active class to clicked button
+    event.target.closest('.tab-button').classList.add('active');
+
+    // Load tab content if needed
+    loadTabContent(tabName);
+}
+
+function loadTabContent(tabName) {
+    // This will be populated with content from the three pages
+    switch(tabName) {
+        case 'timeline':
+            loadTimelineContent();
+            break;
+        case 'quiz':
+            loadQuizContent();
+            break;
+        case 'learning':
+            loadLearningContent();
+            break;
+    }
+}
+
+// Timeline Content
+const timelineData = [
+    {
+        year: '1957',
+        title: 'Договор от Рим',
+        description: 'Основаване на Европейската икономическа общност (ЕИО) с 6 членове.'
+    },
+    {
+        year: '1973',
+        title: 'Първо разширяване',
+        description: 'Присъединяват се Великобритания, Дания и Ирландия.'
+    },
+    {
+        year: '1992',
+        title: 'Договор от Маастрихт',
+        description: 'Основаване на Европейския съюз и въвеждане на европейското гражданство.'
+    },
+    {
+        year: '1995',
+        title: 'Второ разширяване',
+        description: 'Присъединяват се Австрия, Финландия и Швеция.'
+    },
+    {
+        year: '2004',
+        title: 'Голямо разширяване',
+        description: 'Присъединяват се 8 страни от Централна и Източна Европа + Кипър и Малта.'
+    },
+    {
+        year: '2007',
+        title: 'Договор от Лисабон',
+        description: 'Реформиране на институциите на ЕС и въвеждане Хартата на правата.'
+    },
+    {
+        year: '2020',
+        title: 'Съвременност',
+        description: 'ЕС продължава да се развива срещу предизвикателствата на XXI век.'
+    }
+];
+
+function loadTimelineContent() {
+    const container = document.getElementById('timelineEvents');
+    if (container.innerHTML === '') {
+        timelineData.forEach((event, index) => {
+            const eventDiv = document.createElement('div');
+            eventDiv.className = 'timeline-event';
+            eventDiv.style.setProperty('--index', index);
+            eventDiv.innerHTML = `
+                <div class="timeline-year">${event.year}</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">${event.title}</div>
+                    <div class="timeline-description">${event.description}</div>
+                </div>
+            `;
+            container.appendChild(eventDiv);
+        });
+    }
+}
+
+// Quiz Content
+const quizQuestions = [
+    {
+        q: 'Кога беше подписан Договорът от Рим?',
+        opts: ['1957', '1945', '1973', '1992'],
+        a: 0
+    },
+    {
+        q: 'Колко страни са членове на ЕС?',
+        opts: ['27', '28', '25', '30'],
+        a: 0
+    },
+    {
+        q: 'Кой град е седалище на Европейската комисия?',
+        opts: ['Брюксел', 'Страсбург', 'Люксембург', 'Амстердам'],
+        a: 0
+    },
+    {
+        q: 'Кои страни образуват Еврозоната?',
+        opts: ['Всички ЕС страни', '20-те страни с евро', 'Само западни страни', 'Само северни страни'],
+        a: 1
+    },
+    {
+        q: 'Какво означава GDPR?',
+        opts: ['General Data Protection Regulation', 'Global Digital Privacy Rules', 'Government Data Processing Rights', 'General Defense Protocol Rights'],
+        a: 0
+    }
+];
+
+let quizState = {
+    current: 0,
+    score: 0,
+    started: false
+};
+
+function loadQuizContent() {
+    const container = document.getElementById('quizContent');
+    if (container.innerHTML === '') {
+        container.innerHTML = `
+            <div class="card">
+                <h2 style="color: var(--accent); margin-bottom: 20px;">Начални настройки</h2>
+                <label style="display: block; margin: 15px 0;">Брой въпроси: 
+                    <select id="quizCount" style="padding: 8px; margin-left: 10px;">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </label>
+                <button onclick="startQuiz()" style="margin-top: 20px;">Начало на теста</button>
+            </div>
+            <div id="quizArea" style="display:none;">
+                <div class="card">
+                    <h2 id="qDisplay" style="color: var(--accent); margin-bottom: 20px;"></h2>
+                    <div id="optionsDisplay" style="display: grid; gap: 10px;"></div>
+                    <button onclick="nextQuestion()" style="margin-top: 20px;">Следващ въпрос</button>
+                </div>
+            </div>
+            <div id="quizResults" style="display:none;">
+                <div class="card">
+                    <h2 style="color: var(--accent); margin-bottom: 20px;">📊 Резултати</h2>
+                    <p id="scoreDisplay" style="font-size: 18px; margin: 20px 0;"></p>
+                    <button onclick="restartQuiz()">Нов тест</button>
+                </div>
+            </div>
+        `;
+    }
+}
+
+function startQuiz() {
+    quizState.current = 0;
+    quizState.score = 0;
+    quizState.started = true;
+    document.getElementById('quizArea').style.display = 'block';
+    document.querySelectorAll('.card')[0].style.display = 'none';
+    document.getElementById('quizResults').style.display = 'none';
+    displayQuestion();
+}
+
+function displayQuestion() {
+    if (quizState.current < quizQuestions.length) {
+        const q = quizQuestions[quizState.current];
+        document.getElementById('qDisplay').textContent = `Въпрос ${quizState.current + 1}: ${q.q}`;
+        const optionsDiv = document.getElementById('optionsDisplay');
+        optionsDiv.innerHTML = '';
+        q.opts.forEach((opt, i) => {
+            const btn = document.createElement('button');
+            btn.textContent = opt;
+            btn.style.background = 'rgba(30, 111, 191, 0.1)';
+            btn.style.color = 'var(--accent)';
+            btn.style.border = '2px solid rgba(30, 111, 191, 0.2)';
+            btn.onclick = () => selectAnswer(i);
+            optionsDiv.appendChild(btn);
+        });
+    }
+}
+
+function selectAnswer(index) {
+    if (quizQuestions[quizState.current].a === index) {
+        quizState.score++;
+    }
+}
+
+function nextQuestion() {
+    quizState.current++;
+    if (quizState.current < quizQuestions.length) {
+        displayQuestion();
+    } else {
+        endQuiz();
+    }
+}
+
+function endQuiz() {
+    document.getElementById('quizArea').style.display = 'none';
+    document.getElementById('quizResults').style.display = 'block';
+    const percentage = Math.round((quizState.score / quizQuestions.length) * 100);
+    document.getElementById('scoreDisplay').innerHTML = `
+        <strong>您得分: ${quizState.score} / ${quizQuestions.length} (${percentage}%)</strong>
+    `;
+}
+
+function restartQuiz() {
+    loadQuizContent();
+}
+
+// Learning Path Content
+const learningModules = [
+    {
+        title: '🏛️ Institucije na EU',
+        description: 'Sazn ajte više o najvažnijim institucijama Evropske unije'
+    },
+    {
+        title: '📜 Pravo EU',
+        description: 'Razumevanje pravnog sistema i zakona Evropske unije'
+    },
+    {
+        title: '💼 Ekonomija EU',
+        description: 'Proučavanje ekonomskih aspekata Evropske unije'
+    },
+    {
+        title: '🌍 Globalna uloga EU',
+        description: 'EU kao globalni lider i njen uticaj na svetu'
+    }
+];
+
+function loadLearningContent() {
+    const container = document.getElementById('learningContent');
+    if (container.innerHTML === '') {
+        learningModules.forEach((mod, index) => {
+            const modDiv = document.createElement('div');
+            modDiv.className = 'module';
+            modDiv.innerHTML = `
+                <h3>${mod.title}</h3>
+                <p>${mod.description}</p>
+                <button style="margin-top: 15px; font-size: 14px;">Почни этот модуль →</button>
+            `;
+            container.appendChild(modDiv);
+        });
+    }
+}
+
+// Load initial timeline content
+window.addEventListener('load', loadTimelineContent);
+</script>
+
+</body>
+</html>

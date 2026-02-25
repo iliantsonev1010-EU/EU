@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЕС във времето — История на Европейския съюз</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #1e6fbf;
+            --dark: #0f2d47;
+            --light: #f5f9fc;
+            --success: #4ade80;
+            --warning: #fbbf24;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f4f8 0%, #f5f9fc 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background: rgba(30, 111, 191, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateX(-4px);
+        }
+
+        h1 {
+            font-size: 32px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .timeline-wrapper {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(30, 111, 191, 0.1);
+            margin-bottom: 40px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .year-display {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .year-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .year-range {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .slider-container {
+            margin-bottom: 30px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #e0e8f0, var(--accent), var(--success));
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(30, 111, 191, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            width: 28px;
+            height: 28px;
+            box-shadow: 0 4px 16px rgba(30, 111, 191, 0.4);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(30, 111, 191, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            width: 28px;
+            height: 28px;
+            box-shadow: 0 4px 16px rgba(30, 111, 191, 0.4);
+        }
+
+        .timeline-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .timeline-section {
+            background: rgba(30, 111, 191, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .timeline-section h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .timeline-section p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .countries-list {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(30, 111, 191, 0.1);
+        }
+
+        .countries-list p {
+            font-size: 13px;
+            color: #666;
+            margin: 4px 0;
+        }
+
+        .country-badge {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 2px 2px 2px 0;
+        }
+
+        .milestone-badge {
+            display: inline-block;
+            background: var(--warning);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 2px 0;
+        }
+
+        .key-events {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(30, 111, 191, 0.08), rgba(30, 111, 191, 0.03));
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .key-events h3 {
+            color: var(--dark);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .event-list {
+            list-style: none;
+        }
+
+        .event-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .event-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .member-count {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--accent), #1451a3);
+            color: white;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .timeline-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid rgba(30, 111, 191, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(30, 111, 191, 0.15);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* Floating Assistant Button */
+        .assistant-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #1e6fbf, #0d47a1);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(30, 111, 191, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .assistant-fab:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 12px 32px rgba(30, 111, 191, 0.4);
+        }
+
+        .assistant-fab:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-content {
+                grid-template-columns: 1fr;
+            }
+
+            .key-events {
+                grid-column: auto;
+            }
+
+            .year-value {
+                font-size: 36px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .timeline-wrapper {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index1.html" class="back-button">← Обратно към началната страница</a>
+
+        <header>
+            <h1>🏛️ ЕС във времето</h1>
+            <p class="subtitle">Исторически таймлайн на Европейския съюз (1957-2025)</p>
+        </header>
+
+        <div class="timeline-wrapper">
+            <div class="year-display">
+                <div class="year-value" id="yearDisplay">1957</div>
+                <div class="year-range" id="yearRange"></div>
+            </div>
+
+            <div class="slider-container">
+                <input type="range" id="yearSlider" class="slider" min="0" max="100" value="0">
+            </div>
+
+            <div class="timeline-stats" id="statsContainer"></div>
+
+            <div class="timeline-content" id="timelineContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Historical Timeline Data
+        const EU_TIMELINE = {
+            1957: {
+                title: "Основаване на ЕИО",
+                description: "Договор от Рим - начало на Европейския икономически съюз",
+                countries: ["Белгия", "Франция", "Германия", "Италия", "Люксембург", "Нидерландия"],
+                countryCount: 6,
+                events: [
+                    "Подписване на Договор от Рим",
+                    "Създаване на Европейския икономически съюз",
+                    "Договор за създаване на Европейска общност по атомната енергия (Евратом)",
+                    "Гаранция на мир след втората световна война"
+                ],
+                population: 180,
+                gdp: "~500 млрд евро"
+            },
+            1973: {
+                title: "Първо разширение",
+                description: "Присъединяване на три нови членки",
+                countries: ["Дания", "Ирландия", "Обединено кралство"],
+                countryCount: 9,
+                events: [
+                    "Дания, Ирландия и Обединено кралство се присъединяват",
+                    "Разширяване на икономическия блок",
+                    "Увеличаване на политическото влияние в Европа",
+                    "Укрепване на западноевропейската интеграция"
+                ],
+                population: 250,
+                gdp: "~1 трилион евро"
+            },
+            1981: {
+                title: "Присъединяване на Гърция",
+                description: "Гърция става десета членка на ЕЕО",
+                countries: ["Гърция"],
+                countryCount: 10,
+                events: [
+                    "Гърция се присъединява към ЕЕО",
+                    "Разширяване на икономическата и политическа интеграция",
+                    "Включаване на Средиземноморския регион",
+                    "Укрепване на стабилността в Южна Европа"
+                ],
+                population: 280,
+                gdp: "~1.5 трилион евро"
+            },
+            1986: {
+                title: "Испания и Португалия",
+                description: "Двете иберийски страни се присъединяват",
+                countries: ["Испания", "Португалия"],
+                countryCount: 12,
+                events: [
+                    "Испания и Португалия се присъединяват",
+                    "Единния европейски акт - начало на вътрешния пазар",
+                    "Разширяване на икономическите възможности",
+                    "Укрепване на демокрацията в Южна Европа"
+                ],
+                population: 380,
+                gdp: "~2.5 трилион евро"
+            },
+            1995: {
+                title: "Разширение на север",
+                description: "Австрия, Финландия и Швеция се присъединяват",
+                countries: ["Австрия", "Финландия", "Швеция"],
+                countryCount: 15,
+                events: [
+                    "Австрия, Финландия и Швеция присъединяват се",
+                    "Договор за Европейския съюз всъщност вилизира",
+                    "Разширяване на вътрешния пазар на север",
+                    "Включаване на високотехнологични икономики"
+                ],
+                population: 450,
+                gdp: "~4 трилион евро"
+            },
+            2004: {
+                title: "Голямо разширение на изток",
+                description: "Десет страни, главно от Централна и Източна Европа",
+                countries: ["Полша", "Чехия", "Унгария", "Словакия", "Словения", "Литва", "Латвия", "Естония", "Малта", "Кипър"],
+                countryCount: 25,
+                events: [
+                    "10 нови членки присъединяват се - най-голямото разширение",
+                    "Възстановяване на европейската интеграция след студената война",
+                    "Начало на еврото за нови страни",
+                    "Разширяване на движението и икономическите свободи"
+                ],
+                population: 500,
+                gdp: "~5 трилион евро"
+            },
+            2007: {
+                title: "Румъния и България",
+                description: "Последните балкански страни се присъединяват",
+                countries: ["Румъния", "България"],
+                countryCount: 27,
+                events: [
+                    "Румъния и България присъединяват се - достигане на 27 членки",
+                    "Завършване на разширяването на изток",
+                    "Укрепване на политическата стабилност в региона",
+                    "ЕС обхваща почти цялата Западна и Централна Европа"
+                ],
+                population: 510,
+                gdp: "~5.5 трилион евро"
+            },
+            2009: {
+                title: "Лисабонския договор",
+                description: "Встъпление в сила на основния договор на ЕС",
+                countries: [],
+                countryCount: 27,
+                events: [
+                    "Встъпление в сила на Лисабонския договор",
+                    "Укрепване на демократичния процес",
+                    "Разширяване на правата на Европейския парламент",
+                    "Установяване на постоянен председател на Съвета"
+                ],
+                population: 510,
+                gdp: "~5.5 трилион евро"
+            },
+            2020: {
+                title: "COVID-19 и восстановление",
+                description: "ЕС се противостои на пандемията и икономическата криза",
+                countries: [],
+                countryCount: 27,
+                events: [
+                    "Пандемия COVID-19 засяга икономиката на ЕС",
+                    "Създаване на фонд за восстановление от 750 млрд евро",
+                    "Укрепване на солидарността между членките",
+                    "Фокус на цифровата трансформация и екологичния преход"
+                ],
+                population: 530,
+                gdp: "~4.5 трилион евро"
+            },
+            2025: {
+                title: "ЕС днес",
+                description: "Съвременния Европейски съюз с 27 членки",
+                countries: ["Австрия", "Белгия", "България", "Хърватска", "Кипър", "Чехия", "Дания", "Естония", "Финландия", "Франция", "Германия", "Гърция", "Унгария", "Ирландия", "Италия", "Латвия", "Литва", "Люксембург", "Малта", "Нидерландия", "Полша", "Португалия", "Румъния", "Словакия", "Словена", "Испания", "Швеция"],
+                countryCount: 27,
+                events: [
+                    "27 членски державе в пълна членска интеграция",
+                    "Еврото като официална валута в 20 страни",
+                    "Фокус на климатската неутралност до 2050г",
+                    "Цифровата революция и зеленият преход като приоритети"
+                ],
+                population: 540,
+                gdp: "~6 трилион евро"
+            }
+        };
+
+        const YEARS = Object.keys(EU_TIMELINE).map(Number).sort((a, b) => a - b);
+        const yearSlider = document.getElementById('yearSlider');
+        const yearDisplay = document.getElementById('yearDisplay');
+        const timelineContent = document.getElementById('timelineContent');
+
+        function updateTimeline() {
+            const sliderValue = parseInt(yearSlider.value);
+            const yearIndex = Math.round((sliderValue / 100) * (YEARS.length - 1));
+            const selectedYear = YEARS[yearIndex];
+            const data = EU_TIMELINE[selectedYear];
+
+            yearDisplay.textContent = selectedYear;
+            updateYearRange(selectedYear);
+
+            // Create timeline content
+            let content = '';
+
+            // Countries section
+            if (data.countries.length > 0) {
+                content += `
+                    <div class="timeline-section">
+                        <h3>🌍 Присъединили се държави</h3>
+                        <div class="countries-list">
+                            ${data.countries.map(c => `<span class="country-badge">${c}</span>`).join('')}
+                        </div>
+                        <p style="margin-top: 12px;"><strong>Обща членки:</strong> ${data.countryCount}</p>
+                    </div>
+                `;
+            }
+
+            // Events section
+            content += `
+                <div class="timeline-section">
+                    <h3>⚡ Описание</h3>
+                    <p><strong>${data.title}</strong></p>
+                    <p>${data.description}</p>
+                </div>
+            `;
+
+            // Key events
+            content += `
+                <div class="key-events">
+                    <h3>📋 Ключови събития</h3>
+                    <ul class="event-list">
+                        ${data.events.map(e => `<li>${e}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            timelineContent.innerHTML = content;
+
+            // Update stats
+            updateStats(data, selectedYear);
+        }
+
+        function updateYearRange(year) {
+            const yearRange = document.getElementById('yearRange');
+            const nextYearIndex = YEARS.indexOf(year) + 1;
+            if (nextYearIndex < YEARS.length) {
+                const nextYear = YEARS[nextYearIndex];
+                yearRange.textContent = `${year} — ${nextYear}`;
+            } else {
+                yearRange.textContent = `${year} → Днешния ден`;
+            }
+        }
+
+        function updateStats(data, year) {
+            const statsContainer = document.getElementById('statsContainer');
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-number">${data.countryCount}</div>
+                    <div class="stat-label">Членски държави</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${data.population}</div>
+                    <div class="stat-label">Население (млн.)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${data.gdp}</div>
+                    <div class="stat-label">БВП</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">${year}</div>
+                    <div class="stat-label">Година</div>
+                </div>
+            `;
+        }
+
+        yearSlider.addEventListener('input', updateTimeline);
+
+        // Initialize
+        updateTimeline();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                yearSlider.value = Math.max(0, yearSlider.value - 10);
+                updateTimeline();
+            } else if (e.key === 'ArrowRight') {
+                yearSlider.value = Math.min(100, yearSlider.value + 10);
+                updateTimeline();
+            }
+        });
+    </script>
+
+    <!-- Floating Assistant Button -->
+    <button class="assistant-fab" onclick="window.location.href='Virtual_Assistant.html'" title="Отвори Виртуалния асистент">🤖</button>
+</body>
+</html>
