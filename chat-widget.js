@@ -4,12 +4,12 @@
     const chatWidgetHTML = `
         <div id="chat-widget-container" class="chat-widget-hidden">
             <div class="chat-widget-header">
-                <h3>🤖 ЕУ Асистент</h3>
+                <h3>🤖 AI Асистент</h3>
                 <button id="chat-close-btn" class="chat-close-btn">✕</button>
             </div>
             <div class="chat-messages" id="chat-messages">
                 <div class="chat-message assistant-message">
-                    <p>Здравей! 👋 Аз съм твоят ЕУ асистент. Как мога да ти помогна с информация за Европейския съюз?</p>
+                    <p>Здравей! 👋 Аз съм твоят AI асистент. Как мога да ти помогна с информация за Европейския съюз?</p>
                 </div>
             </div>
             <div class="chat-input-area">
@@ -17,7 +17,7 @@
                 <button id="chat-send-btn" class="chat-send-btn">Изпрати</button>
             </div>
         </div>
-        <button id="chat-toggle-btn" class="chat-toggle-btn">💬 Асистент</button>
+        <button id="chat-toggle-btn" class="chat-toggle-btn">💬 AI Асистент</button>
     `;
 
     // Create chat widget styles
