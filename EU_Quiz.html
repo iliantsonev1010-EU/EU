@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EU Quiz — Тест на знанията за ЕС</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #1e6fbf;
+            --dark: #0f2d47;
+            --light: #f5f9fc;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f4f8 0%, #f5f9fc 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background: rgba(30, 111, 191, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(30, 111, 191, 0.1);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .level-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .level-option {
+            padding: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .level-option:hover {
+            background: rgba(30, 111, 191, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(30, 111, 191, 0.2);
+        }
+
+        .level-option h3 {
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .level-option p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .level-option.selected {
+            background: var(--accent);
+            color: white;
+        }
+
+        .level-option.selected h3,
+        .level-option.selected p {
+            color: white;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--accent), #1451a3);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(30, 111, 191, 0.3);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Quiz Screen */
+        .quiz-screen {
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e8f0;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--accent), var(--success));
+            transition: width 0.3s ease;
+        }
+
+        .question-counter {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 30px;
+        }
+
+        .question h2 {
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 14px;
+            border: 2px solid #e0e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: var(--accent);
+            background: rgba(30, 111, 191, 0.02);
+        }
+
+        .option.selected {
+            border-color: var(--accent);
+            background: rgba(30, 111, 191, 0.1);
+            font-weight: 600;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .option.incorrect {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .next-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .next-btn:hover:not(:disabled) {
+            background: #1451a3;
+            transform: translateY(-2px);
+        }
+
+        .next-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, var(--accent), #1451a3);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .score-number {
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .score-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .badge-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .results-details {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .results-details h3 {
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .result-item {
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .result-item.correct {
+            border-left: 4px solid var(--success);
+        }
+
+        .result-item.incorrect {
+            border-left: 4px solid var(--error);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1451a3;
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            background: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 111, 191, 0.05);
+        }
+
+        .certificate-preview {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 2px solid #f59e0b;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .certificate-preview.show {
+            display: block;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .certificate-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #b45309;
+            margin-bottom: 10px;
+        }
+
+        .certificate-text {
+            color: #92400e;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Floating Assistant Button */
+        .assistant-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #1e6fbf, #0d47a1);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(30, 111, 191, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .assistant-fab:hover {
+            transform: scale(1.1) translateY(-2px);
+            box-shadow: 0 12px 32px rgba(30, 111, 191, 0.4);
+        }
+
+        .assistant-fab:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 20px;
+            }
+
+            .level-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .score-number {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index1.html" class="back-button">← Обратно към началната страница</a>
+
+        <div class="card">
+            <h1>📚 EU Quiz</h1>
+            <p class="subtitle">Тестирай своите знания за Европейския съюз</p>
+
+            <!-- Start Screen -->
+            <div class="start-screen" id="startScreen">
+                <h2>Избери своя ниво</h2>
+                <div class="level-selector">
+                    <div class="level-option" data-level="junior">
+                        <h3>👨‍🎓 Младши</h3>
+                        <p>5-7 клас</p>
+                    </div>
+                    <div class="level-option" data-level="intermediate">
+                        <h3>🎓 Средни</h3>
+                        <p>8-10 клас</p>
+                    </div>
+                    <div class="level-option" data-level="advanced">
+                        <h3>👨‍🎓 Напредни</h3>
+                        <p>11-12 клас</p>
+                    </div>
+                </div>
+
+                <button class="start-btn" id="startBtn" disabled>Начало на теста</button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div class="quiz-screen" id="quizScreen">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="question-counter" id="questionCounter"></div>
+
+                <div class="question" id="questionContainer"></div>
+
+                <button class="next-btn" id="nextBtn" disabled>Следващ въпрос</button>
+            </div>
+
+            <!-- Results Screen -->
+            <div class="results-screen" id="resultsScreen">
+                <div class="score-display">
+                    <div class="badge-icon" id="badgeIcon"></div>
+                    <div class="score-number" id="scoreNumber"></div>
+                    <div class="score-text" id="scoreText"></div>
+                    <div class="level-badge" id="levelBadge"></div>
+                </div>
+
+                <div class="certificate-preview" id="certificatePreview"></div>
+
+                <div class="results-details">
+                    <h3>Резултати по въпрос:</h3>
+                    <div id="resultsList"></div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="downloadBtn">📥 Изтегли сертификат</button>
+                    <button class="btn btn-secondary" id="restartBtn">🔄 Отново</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Questions Data
+        const QUIZ_QUESTIONS = {
+            junior: [
+                {
+                    question: "Колко страни са членки на ЕС днес?",
+                    options: ["20", "27", "35", "15"],
+                    correct: 1,
+                    explanation: "ЕС има 27 членски държави след излизането на Обединено кралство през 2020г."
+                },
+                {
+                    question: "Коя е столицата на ЕС?",
+                    options: ["Амстердам", "Брюксел", "Люксембург", "Страсбург"],
+                    correct: 1,
+                    explanation: "Брюксел е основната столица на ЕС, където се намират главните институции."
+                },
+                {
+                    question: "Какво е еврото?",
+                    options: ["Портал", "Валута на ЕС", "Град", "Язик"],
+                    correct: 1,
+                    explanation: "Еврото е официалната валута на 20 членски държави на ЕС."
+                },
+                {
+                    question: "Коя организация управлява ЕС?",
+                    options: ["ООН", "НАТО", "Европейския съюз", "Всички верни"],
+                    correct: 2,
+                    explanation: "Европейския съюз управлява себе си чрез своите собствени институции."
+                },
+                {
+                    question: "Кога е основан ЕС?",
+                    options: ["1945", "1957", "1970", "1989"],
+                    correct: 1,
+                    explanation: "ЕС е основан през 1957г. със Договор от Рим."
+                }
+            ],
+            intermediate: [
+                {
+                    question: "Кои са четирите основни свободи на вътрешния пазар на ЕС?",
+                    options: ["Свобода на движение на хора, услуги, капитал и стоки", "Свобода на слово и религия", "Образование и здравеопазване", "Военна защита"],
+                    correct: 0,
+                    explanation: "Четирите основни свободи на вътрешния пазар са: свобода на движение на хора, услуги, капитал и стоки."
+                },
+                {
+                    question: "Какво е Шенгенското пространство?",
+                    options: ["Икономическа зона", "Административна единица", "Зона на свободно движение без пограничен контрол", "Военен съюз"],
+                    correct: 2,
+                    explanation: "Шенгенското пространство позволява свободно движение между 27 европейски държави без пограничен контрол."
+                },
+                {
+                    question: "Кои институции представляват законодателната власт на ЕС?",
+                    options: ["Европейския комисия", "Европейския парламент и Съвета на ЕС", "Съда на ЕС", "Европейския съвет"],
+                    correct: 1,
+                    explanation: "Европейския парламент и Съвета на ЕС съставляват законодателната власт на ЕС."
+                },
+                {
+                    question: "Какво е Erasmus+?",
+                    options: ["Военна организация", "Програма за образователна размяна и мобилност", "Икономически форум", "Хуманитарна организация"],
+                    correct: 1,
+                    explanation: "Erasmus+ е програма на ЕС, която подпомага образователната размяна и мобилност на студенти."
+                },
+                {
+                    question: "Какво е климатния пакт на ЕС?",
+                    options: ["Военен договор", "План да ЕС да достигне климатична неутралност до 2050г", "Икономически съюз", "Образователна инициатива"],
+                    correct: 1,
+                    explanation: "Климатния пакт на ЕС е амбициозна цел да достигне климатична неутралност до 2050г."
+                }
+            ],
+            advanced: [
+                {
+                    question: "Какви са основните принципи на подсидиарност и пропорционалност в ЕС?",
+                    options: ["Централизирана управа", "Решения трябва да се взимат на най-ниското подходящо ниво", "Съвкупното правило", "Военна йерархия"],
+                    correct: 1,
+                    explanation: "Подсидиарност означава, че решенията трябва да се взимат на най-ниското подходящо ниво на управлението."
+                },
+                {
+                    question: "Какво е Европейския фискален пакт?",
+                    options: ["План за намаляване на данците", "Договор за фискална координация и консолидирана база данни", "Военен договор", "Образователен пакет"],
+                    correct: 1,
+                    explanation: "Европейския фискални пакт e договор за фискална координация между членките на ЕС."
+                },
+                {
+                    question: "Какви са основните цели на ЕС във вътрешната политика?",
+                    options: ["Само икономическо развитие", "Социална справедливост, правото на човека, демокрация и устойчивост", "Военна експанзия", "Индустриално развитие"],
+                    correct: 1,
+                    explanation: "Основните цели на ЕС включват социална справедливост, правото на човека, демокрация и устойчивост."
+                },
+                {
+                    question: "Какво е механизма за защита на правото на човека в ЕС?",
+                    options: ["Национални съдилища", "Европейския съд на правата на човека", "ООН", "Политически съвет"],
+                    correct: 1,
+                    explanation: "Европейския съд на правата на човека е механизма за защита на правата на човека в ЕС."
+                },
+                {
+                    question: "Какво е Европейския зелена сделка (Green Deal)?",
+                    options: ["Икономически пакт", "План да ЕС да стане климатично неутрална и да преминете към зелена икономика", "Военен договор", "Образователна инициатива"],
+                    correct: 1,
+                    explanation: "Европейския зелена сделка е комплексен план да ЕС да стане климатично неутрална до 2050г и да преминете към зелена икономика."
+                }
+            ]
+        };
+
+        // State
+        let currentLevel = null;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+
+        // Elements
+        const startScreen = document.getElementById('startScreen');
+        const quizScreen = document.getElementById('quizScreen');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const startBtn = document.getElementById('startBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const levelOptions = document.querySelectorAll('.level-option');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // Event Listeners
+        levelOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                levelOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                currentLevel = option.dataset.level;
+                startBtn.disabled = false;
+            });
+        });
+
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+        document.getElementById('downloadBtn').addEventListener('click', downloadCertificate);
+
+        function startQuiz() {
+            questions = QUIZ_QUESTIONS[currentLevel];
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+
+            startScreen.style.display = 'none';
+            quizScreen.style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            const questionContainer = document.getElementById('questionContainer');
+
+            let optionsHTML = '';
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="option" data-index="${index}" onclick="selectAnswer(${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+
+            questionContainer.innerHTML = `
+                <h2>${question.question}</h2>
+                <div class="options">${optionsHTML}</div>
+            `;
+
+            updateProgress();
+            updateCounter();
+            nextBtn.disabled = true;
+        }
+
+        function selectAnswer(index) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(o => o.classList.remove('selected'));
+            options[index].classList.add('selected');
+
+            userAnswers[currentQuestionIndex] = index;
+            nextBtn.disabled = false;
+        }
+
+        function nextQuestion() {
+            const question = questions[currentQuestionIndex];
+            const selectedIndex = userAnswers[currentQuestionIndex];
+
+            if (selectedIndex === question.correct) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateCounter() {
+            document.getElementById('questionCounter').textContent = 
+                `Въпрос ${currentQuestionIndex + 1} от ${questions.length}`;
+        }
+
+        function showResults() {
+            quizScreen.style.display = 'none';
+            resultsScreen.style.display = 'block';
+
+            const percentage = Math.round((score / questions.length) * 100);
+            const levelNames = { junior: 'Младши', intermediate: 'Средни', advanced: 'Напредни' };
+            
+            let badge = '🌟';
+            let levelText = 'Нов гражданин на ЕС';
+
+            if (percentage >= 80) {
+                badge = '🏆';
+                levelText = 'Европейски експерт';
+            } else if (percentage >= 60) {
+                badge = '⭐';
+                levelText = 'Запалени европеец';
+            }
+
+            document.getElementById('badgeIcon').textContent = badge;
+            document.getElementById('scoreNumber').textContent = percentage + '%';
+            document.getElementById('scoreText').textContent = `Резултат от ${score}/${questions.length}`;
+            document.getElementById('levelBadge').textContent = levelText;
+
+            // Show certificate preview
+            const certificatePreview = document.getElementById('certificatePreview');
+            certificatePreview.classList.add('show');
+            certificatePreview.innerHTML = `
+                <div class="certificate-title">🏅 Сертификат на компетентност</div>
+                <div class="certificate-text">
+                    <p style="margin: 10px 0;"><strong>Този документ удостоверява, че</strong></p>
+                    <p style="margin: 15px 0; font-size: 16px;"><strong>Гражданин на ЕС</strong></p>
+                    <p style="margin: 10px 0;">е успешно завършил теста EU Quiz</p>
+                    <p style="margin: 10px 0;"><strong>Ниво:</strong> ${levelNames[currentLevel]}</p>
+                    <p style="margin: 10px 0;"><strong>Резултат:</strong> ${percentage}%</p>
+                    <p style="margin: 10px 0;"><strong>Ранг:</strong> ${levelText}</p>
+                    <p style="margin: 15px 0; font-size: 12px;">Издадено: ${new Date().toLocaleDateString('bg-BG')}</p>
+                </div>
+            `;
+
+            // Show results
+            const resultsList = document.getElementById('resultsList');
+            let resultsHTML = '';
+            questions.forEach((q, i) => {
+                const isCorrect = userAnswers[i] === q.correct;
+                resultsHTML += `
+                    <div class="result-item ${isCorrect ? 'correct' : 'incorrect'}">
+                        <div style="flex: 1; text-align: left;">
+                            <strong>${q.question}</strong>
+                            <p style="font-size: 12px; color: #666; margin-top: 4px;">${q.explanation}</p>
+                        </div>
+                        <div>${isCorrect ? '✅' : '❌'}</div>
+                    </div>
+                `;
+            });
+            resultsList.innerHTML = resultsHTML;
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            currentLevel = null;
+
+            startScreen.style.display = 'block';
+            quizScreen.style.display = 'none';
+            resultsScreen.style.display = 'none';
+
+            levelOptions.forEach(o => o.classList.remove('selected'));
+            startBtn.disabled = true;
+        }
+
+        function downloadCertificate() {
+            const percentage = Math.round((score / questions.length) * 100);
+            const levelNames = { junior: 'Младши', intermediate: 'Средни', advanced: 'Напредни' };
+            
+            let levelText = 'Нов гражданин на ЕС';
+            if (percentage >= 80) {
+                levelText = 'Европейски експерт';
+            } else if (percentage >= 60) {
+                levelText = 'Запалени европеец';
+            }
+
+            const certificateHTML = `
+                <html>
+                <head>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 0; padding: 40px; background: #f9f9f9; }
+                        .certificate {
+                            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                            border: 8px solid #f59e0b;
+                            border-radius: 16px;
+                            padding: 60px;
+                            text-align: center;
+                            max-width: 900px;
+                            margin: 40px auto;
+                            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+                        }
+                        h1 { color: #b45309; font-size: 48px; margin: 20px 0; }
+                        .subtitle { color: #92400e; font-size: 24px; margin: 20px 0; }
+                        .content { color: #92400e; font-size: 18px; line-height: 2; margin: 30px 0; }
+                        .badge { font-size: 80px; margin: 20px 0; }
+                        .footer { color: #b45309; font-size: 14px; margin-top: 40px; border-top: 2px solid #f59e0b; padding-top: 20px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="certificate">
+                        <div class="badge">🏅</div>
+                        <h1>СЕРТИФИКАТ</h1>
+                        <div class="subtitle">Компетентност в ЕС</div>
+                        <div class="content">
+                            <p>Този документ удостоверява, че</p>
+                            <p style="font-size: 28px;"><strong>ГРАЖДАНИН НА ЕС</strong></p>
+                            <p>е успешно завършил теста EU Quiz</p>
+                            <p style="margin-top: 30px;">
+                                <strong>Ниво:</strong> ${levelNames[currentLevel]}<br>
+                                <strong>Резултат:</strong> ${percentage}%<br>
+                                <strong>Ранг:</strong> ${levelText}
+                            </p>
+                        </div>
+                        <div class="footer">
+                            <p>Издадено: ${new Date().toLocaleDateString('bg-BG')}</p>
+                            <p style="margin-top: 10px;">© EU Explorer - Образователна платформа за ЕС</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const element = document.createElement('div');
+            element.innerHTML = certificateHTML;
+            
+            const opt = {
+                margin: 0,
+                filename: `EU_Certificate_${new Date().getTime()}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { orientation: 'landscape', unit: 'mm', format: 'a4' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+
+    <!-- Floating Assistant Button -->
+    <button class="assistant-fab" onclick="window.location.href='Virtual_Assistant.html'" title="Отвори Виртуалния асистент">🤖</button>
+</body>
+</html>

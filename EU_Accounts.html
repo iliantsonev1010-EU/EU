@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Профили — EU Explorer</title>
+  <style>
+    body{font-family:Poppins,Arial;background:linear-gradient(135deg,#f5fbff,#eef6ff);padding:20px;color:#0f2d47}
+    .card{max-width:900px;margin:0 auto;background:white;padding:20px;border-radius:12px;box-shadow: 0 8px 32px rgba(30,111,191,0.1); border: 1px solid rgba(30,111,191,0.08)}
+    input,button{padding:10px;border-radius:8px;border:1px solid #e6f0fb}
+    .row{display:flex;gap:8px;align-items:center}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a href="index1.html" style="color:#1e6fbf">← Обратно</a>
+    <h1>Профили и регистрация</h1>
+
+    <div id="auth">
+      <h3>Вход / Регистрация (демо)</h3>
+      <div class="row" style="margin-top:8px"><input id="username" placeholder="Потребителско име"><select id="role"><option value="student">Ученик</option><option value="teacher">Учител</option><option value="guest">Гост</option></select><button id="register">Регистрация</button></div>
+      <div style="margin-top:8px"><button id="loadProfile">Зареди профил</button></div>
+    </div>
+
+    <div id="profile" style="display:none;margin-top:12px">
+      <h3>Профил: <span id="profName"></span> <small id="profRole" style="color:#666"></small></h3>
+      <div><strong>История на обучение</strong><div id="history"></div></div>
+      <div style="margin-top:12px"><strong>Любими държави</strong><div id="favorites"></div></div>
+      <div style="margin-top:12px"><strong>AI материали</strong><div id="aiMaterials"></div></div>
+      <div style="margin-top:12px"><button onclick="logout()">Изход</button></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('register').addEventListener('click', ()=>{
+      const u=document.getElementById('username').value.trim();
+      const role=document.getElementById('role').value;
+      if(!u){alert('Въведи потребителско име');return}
+      const profile={username:u,role,created:Date.now(),favorites:[],history:[]};
+      localStorage.setItem('eu_profile_'+u, JSON.stringify(profile));
+      localStorage.setItem('eu_current_user', u);
+      showProfile(profile);
+    });
+
+    document.getElementById('loadProfile').addEventListener('click', ()=>{
+      const u=document.getElementById('username').value.trim();
+      if(!u){alert('Въведи потребителско име');return}
+      const raw=localStorage.getItem('eu_profile_'+u);
+      if(!raw){alert('Профил не е намерен');return}
+      showProfile(JSON.parse(raw));
+    });
+
+    function showProfile(p){
+      document.getElementById('auth').style.display='none';
+      document.getElementById('profile').style.display='block';
+      document.getElementById('profName').textContent=p.username;
+      document.getElementById('profRole').textContent='('+p.role+')';
+
+      // Load history from eu_exam_history as example
+      const hist = JSON.parse(localStorage.getItem('eu_exam_history')||'[]');
+      document.getElementById('history').innerHTML = hist.map(h=>`<div style="padding:8px;border-bottom:1px solid #eef6ff">${new Date(h.ts).toLocaleString('bg-BG')}: ${h.score}/${h.outOf} (клас ${h.grade})</div>`).join('') || '<div style="color:#666">Няма записи</div>';
+
+      document.getElementById('favorites').innerHTML = (p.favorites||[]).map(f=>`<div>${f}</div>`).join('') || '<div style="color:#666">Без любими</div>';
+
+      // AI generated materials
+      const ai = JSON.parse(localStorage.getItem('ai_teacher_generated')||'[]');
+      if(ai.length){
+        document.getElementById('aiMaterials').innerHTML = ai.slice(0,10).map(a=>`<div style="padding:8px;border-bottom:1px solid #eef6ff">${new Date(a.ts).toLocaleString('bg-BG')}: ${a.topic || 'Тема'} — ${a.count || a.questions?.length} въпроса <button onclick=window.location.href='EU_Exam_Mode.html'>Отвори</button></div>`).join('');
+      } else {
+        document.getElementById('aiMaterials').innerHTML = '<div style="color:#666">Няма AI материали</div>';
+      }
+
+      // Save current user
+      localStorage.setItem('eu_current_user', p.username);
+    }
+
+    function logout(){localStorage.removeItem('eu_current_user');location.reload()}
+  </script>
+
+  <button style="position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:linear-gradient(90deg,#1e6fbf,#1451a3);color:white;border:none;cursor:pointer" onclick="window.location.href='Virtual_Assistant.html'">🤖</button>
+</body>
+</html>

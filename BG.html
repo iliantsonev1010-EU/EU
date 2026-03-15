@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>България - EU Откривател</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --accent: #1e6fbf; --dark: #0f2d47; --light: #f5f9fc; }
+        html, body { height: 100%; font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #e8f4f8 0%, #f5f9fc 100%); color: var(--dark); }
+        body { padding: 20px; min-height: 100vh; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 36px; color: var(--accent); margin-bottom: 10px; font-weight: 700; }
+        .header p { font-size: 14px; color: #666; margin-bottom: 10px; }
+        .back-btn { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: rgba(30, 111, 191, 0.1); border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); cursor: pointer; font-weight: 600; text-decoration: none; transition: all 0.3s ease; }
+        .back-btn:hover { background: var(--accent); color: white; }
+        .content { max-width: 1200px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(30, 111, 191, 0.1); padding: 40px; min-height: 600px; }
+        .content h2 { color: var(--accent); font-size: 28px; margin-bottom: 20px; }
+        .content h3 { color: var(--accent); font-size: 22px; margin-top: 30px; margin-bottom: 15px; }
+        .content p { color: #666; line-height: 1.8; margin-bottom: 16px; }
+        .flag { font-size: 80px; text-align: center; margin-bottom: 20px; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }
+        .info-card { background: rgba(30, 111, 191, 0.05); border-left: 4px solid var(--accent); padding: 20px; border-radius: 8px; }
+        .info-card h4 { color: var(--accent); margin-bottom: 10px; }
+        .region-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .region-item { background: #f5f9fc; padding: 15px; border-radius: 8px; border: 1px solid rgba(30, 111, 191, 0.15); }
+        .region-item h4 { color: var(--accent); margin-bottom: 5px; }
+        .region-item p { font-size: 13px; color: #999; margin: 0; }
+        ul { list-style-position: inside; color: #666; line-height: 1.8; margin: 15px 0; }
+        li { margin-bottom: 8px; }
+        footer { max-width: 1200px; margin: 40px auto 0; padding: 20px; text-align: center; color: #999; font-size: 13px; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">← Назад към началната страница</a>
+
+<div class="header">
+    <div class="flag">🇧🇬</div>
+    <h1>България</h1>
+    <p>Член на Европейския съюз от 1 януари 2007 г.</p>
+</div>
+
+<div class="content">
+    <h2>🌍 България - Преглед</h2>
+    
+    <div class="info-grid">
+        <div class="info-card">
+            <h4>📍 Столица</h4>
+            <p><strong>София</strong> - център на политическия и икономическия живот на страната</p>
+        </div>
+        <div class="info-card">
+            <h4>👥 Население</h4>
+            <p>Около <strong>6.8 милиона</strong> жители (по състояние на 2026 г.)</p>
+        </div>
+        <div class="info-card">
+            <h4>📊 Площ</h4>
+            <p><strong>110,994 км²</strong> - разположена в Югоизточна Европа</p>
+        </div>
+        <div class="info-card">
+            <h4>💶 Валута</h4>
+            <p><strong>Евро (EUR)</strong> - официална валута на България</p>
+        </div>
+    </div>
+
+    <h3>📜 История на България в ЕС</h3>
+    <p>България е приета в Европейския съюз на <strong>1 януари 2007 г.</strong> след преговори, които започнаха в началото на 2000-те години. Това беше историческо събитие за българския народ, както и средство за модернизиране на икономиката и институциите на страната.</p>
+    
+    <p>В качеството си на член на ЕС, България се ангажира да прилага европейските закони и стандарти в областите на правосъдието, вътрешните работи, икономиката и защитата на окръжава щата среда.</p>
+
+    <h3>🏛️ Политика и управление</h3>
+    <div class="info-grid">
+        <div class="info-card">
+            <h4>Правителство</h4>
+            <p>Парламентарна демокрация с президент и министърски съвет</p>
+        </div>
+        <div class="info-card">
+            <h4>Национално събрание</h4>
+            <p>240 депутати, избрани от народа всеки 4 години</p>
+        </div>
+        <div class="info-card">
+            <h4>Съдебна власт</h4>
+            <p>Независима съдебна система, конституционна защита</p>
+        </div>
+        <div class="info-card">
+            <h4>Европейско представителство</h4>
+            <p>17 депутата в Европейския парламент, представяват България</p>
+        </div>
+    </div>
+
+    <h3>🏢 Административно деление</h3>
+    <p>България е разделена на <strong>28 области</strong> (окръгови), всяка с собствен административен център. Основните градове включват:</p>
+    
+    <div class="region-list">
+        <div class="region-item">
+            <h4>София</h4>
+            <p>Столица, политически и икономически център</p>
+        </div>
+        <div class="region-item">
+            <h4>Пловдив</h4>
+            <p>Втори по величина град с богата история</p>
+        </div>
+        <div class="region-item">
+            <h4>Варна</h4>
+            <p>Приморски град, важен пристан</p>
+        </div>
+        <div class="region-item">
+            <h4>Бургас</h4>
+            <p>Приморски град и туристически център</p>
+        </div>
+        <div class="region-item">
+            <h4>Русе</h4>
+            <p>Град при Дунав, икономически център</p>
+        </div>
+        <div class="region-item">
+            <h4>Стара Загора</h4>
+            <p>Централна България, исторически значение</p>
+        </div>
+    </div>
+
+    <h3>🌟 Икономика и индустрия</h3>
+    <div class="info-grid">
+        <div class="info-card">
+            <h4>🏭 Промишленост</h4>
+            <p>Машиностроене, хранителна промишленост, енергетика</p>
+        </div>
+        <div class="info-card">
+            <h4>🌾 Селско стопанство</h4>
+            <p>Пшеница, кукуруз, розово масло, вино</p>
+        </div>
+        <div class="info-card">
+            <h4>🏖️ Туризъм</h4>
+            <p>Черноморски плажове, планински курорти, исторически паметници</p>
+        </div>
+        <div class="info-card">
+            <h4>💻 ИТ сектор</h4>
+            <p>Бързо развиваща се софтуерна и IT индустрия</p>
+        </div>
+    </div>
+
+    <h3>🎓 Образование и наука</h3>
+    <p>България има дълга традиция на образование. Най-старият университет е <strong>Софийския университет "Св. Климент Охридски"</strong>, основан през 1888 г. Страната активно участва в програмата <strong>Erasmus+</strong>, която позволява на студенти да учат в других европейски университети.</p>
+
+    <h3>🌿 Природа и окръжава щата среда</h3>
+    <p>България има разнообразна природа, включително:</p>
+    <ul>
+        <li>🏔️ <strong>Рилска планинска маса</strong> - най-висока верига на Балканския полуостров</li>
+        <li>🌊 <strong>Черно море</strong> - естествена граница на България на изток</li>
+        <li>🌲 <strong>Лесни региони</strong> - богати на флора и фауна</li>
+        <li>🌸 <strong>Природни резервати</strong> - защитени райони</li>
+        <li>🏞️ <strong>Пещери</strong> - познати преди света (Магура, Ягодина)</li>
+    </ul>
+
+    <h3>🎭 Култура и традиции</h3>
+    <p>България има богата лингвистична и културна наследство, датираща хиляди години. Оригиналният <strong>кирилски алфавит</strong>, използван за редица славянски езици, е разработен с участието на българските светци св. Кирил и св. Методий.</p>
+    
+    <p>Българската музика, традиционни танци и фестивали са известни по целия свят. Фестивалът на розовото масло във Върбица и множество други събитие привличат посетители от цял свят.</p>
+
+    <h3>✨ Интересни факти за България</h3>
+    <ul>
+        <li>🌹 България е най-голямата производител на <strong>розово масло</strong> в света (70% от глобалното производство)</li>
+        <li>🛕 <strong>Свети Александър Невски</strong> е един от най-известните храмове в Южна Европа</li>
+        <li>🎨 България има дълга традиция на традиционни занаяти и ремесла</li>
+        <li>📚 Първото европейски печатня е създава в България</li>
+        <li>🏆 България е известна със своя йогурт и tradicionalни храни</li>
+    </ul>
+
+    <h3>🤝 България в ЕС - Предизвикателства и възможности</h3>
+    <div class="info-grid">
+        <div class="info-card">
+            <h4>Икономически растеж</h4>
+            <p>Модернизиране на икономиката и инвестиции в технологии</p>
+        </div>
+        <div class="info-card">
+            <h4>Правосъдие</h4>
+            <p>Подобряване на съдебната система и борба срещу корупцията</p>
+        </div>
+        <div class="info-card">
+            <h4>Образование</h4>
+            <p>Висше образование и развитие на квалифицирана работна сила</p>
+        </div>
+        <div class="info-card">
+            <h4>Зелена енергия</h4>
+            <p>Преход към възобновяеми енергийни източници</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>EU Откривател 2026 | България в Европейския съюз | За повече информация посетете официалния сайт на правителството</p>
+</footer>
+
+</body>
+</html>

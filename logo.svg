@@ -1,0 +1,30 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <circle cx="100" cy="85" r="40" fill="none" stroke="#1e6fbf" stroke-width="3"/>
+  
+  <!-- Eyes -->
+  <circle cx="85" cy="75" r="8" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  <circle cx="115" cy="75" r="8" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  
+  <!-- Left Earphone -->
+  <circle cx="55" cy="85" r="6" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  <path d="M 55 85 Q 45 85 45 95" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  
+  <!-- Right Earphone -->
+  <circle cx="145" cy="85" r="6" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  <path d="M 145 85 Q 155 85 155 95" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  
+  <!-- Mouth -->
+  <path d="M 85 105 Q 100 115 115 105" fill="none" stroke="#1e6fbf" stroke-width="2.5" stroke-linecap="round"/>
+  
+  <!-- Neck -->
+  <rect x="90" y="125" width="20" height="15" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  
+  <!-- Shoulders -->
+  <ellipse cx="100" cy="145" rx="35" ry="20" fill="none" stroke="#1e6fbf" stroke-width="2.5"/>
+  
+  <!-- Star on top -->
+  <g transform="translate(100, 25)">
+    <polygon points="0,-15 4,-3 17,-3 7,4 10,17 0,9 -10,17 -7,4 -17,-3 -4,-3" fill="#FFD700" stroke="#FFC700" stroke-width="1"/>
+  </g>
+</svg>
